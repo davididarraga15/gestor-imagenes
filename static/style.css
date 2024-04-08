@@ -1,0 +1,8 @@
+
+.background-container {
+    background-image: url('fondo.jpg') !important; /* Ruta de la imagen de fondo */
+    background-size: cover; /* Escalar la imagen para que cubra todo el fondo */
+    min-height: 100vh; /* Altura mínima igual a la altura de la ventana del navegador */
+    position: relative; /* Posición relativa para permitir superposición */
+    padding: 20px; /* Espacio interno para que las tarjetas no se superpongan con los bordes */
+}
