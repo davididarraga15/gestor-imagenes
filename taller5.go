@@ -106,8 +106,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	fmt.Print("Ingrese el puerto: ")
 	fmt.Scan(&puerto)
-	fmt.Print("Ingrese el tema: ")
-	fmt.Scan(&tema)
 
 	// Manejador para la ruta "/"
 	http.HandleFunc("/", handler)
