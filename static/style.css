@@ -1,8 +1,25 @@
+#image-container {
+    max-width: auto;
+    max-height: 100%;
+    justify-items: center;
+   
+}
 
-.background-container {
-    background-image: url('fondo.jpg') !important; /* Ruta de la imagen de fondo */
-    background-size: cover; /* Escalar la imagen para que cubra todo el fondo */
-    min-height: 100vh; /* Altura mínima igual a la altura de la ventana del navegador */
-    position: relative; /* Posición relativa para permitir superposición */
-    padding: 20px; /* Espacio interno para que las tarjetas no se superpongan con los bordes */
+#text{
+    color: white !important;
+}
+
+.prueba{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body {
+    margin: 0; /* Elimina cualquier margen predeterminado */
+    padding: 0; /* Elimina cualquier relleno predeterminado */
+    background-image: url(/static/fondo.jpg) !important;
+    background-size: cover; /* Ajusta el tamaño de la imagen de fondo para cubrir toda la pantalla */
+    background-repeat: no-repeat; /* Evita que la imagen de fondo se repita */
 }

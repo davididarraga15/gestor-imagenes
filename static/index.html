@@ -2,87 +2,64 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Laboratorio 7</title>
+
     <link rel="stylesheet" href="static/css/all.min.css">
-    
-    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+
     <script src="static/js/bootstrap.bundle.min.js"></script>
 
-    <style>
-
-      .background-container {
-      background-image: url('fondo.jpg') !important; /* Ruta de la imagen de fondo */
-      background-size: cover; /* Escalar la imagen para que cubra todo el fondo */
-      min-height: 100vh; /* Altura mínima igual a la altura de la ventana del navegador */
-      position: relative; /* Posición relativa para permitir superposición */
-      padding: 20px; /* Espacio interno para que las tarjetas no se superpongan con los bordes */
-      } 
-
-    </style>
 </head>
 
-<header class="p-3 text-bg-dark header-clinica justify-content-md-between ">
-
-    <div class="container">
-  
-      <div class="row align-items-center justify-content-center justify-content-lg-start">
-        <span class="fs-4 ms-3 me-3">Servidor de Imágenes</span>
-        
-      </div>
-  
+<body style="margin: 0; padding: 0; background-image: url(fondo.jpg); background-size: cover; background-repeat: no-repeat;">
+   
+    <div class="container d-flex justify-content-center mt-4">
+        <span class="fs-4 ms-3 me-3" style="color: white;"><i class="fa-solid fa-cloud-arrow-up" style="color: #ffffff;"></i> Servidor de Imágenes</span>
     </div>
   
-</header>
-
-<body>
-
-  <div class="background-container">
-    
-    <div class="container mt-4">
+    <div class="prueba">
 
       <!-- Imagenes -->
     
-      <div class="container mt-5">
+      <div class="container mt-5 d-flex justify-content-center" id="image-container">
         
         <div class="row">
-            {{range .Images}}
-            <div class="col-md-6">
-              <div class="card">
-                <img src="{{.Encoding}}" alt="" class="img-fluid">
-                <div class="card-body">
-                  <h5 class="card-tittle">{{.Nombre}}</h5>
-                </div>
-              </div>  
-            </div>
-            {{end}}
+          {{range .Images}}
+          <div class="col-md-6" style="margin-top: 20px; position: relative; border: none;">
+              <div>
+                  <img src="{{.Encoding}}" alt="" class="img-fluid" style="border: none; border-radius: 8%;">
+                  <div class="card-body" style="position: absolute; bottom: 0; left: 10px; padding: 25px; color: white;">
+                      <h5 class="card-title">{{.Nombre}}</h5>
+                  </div>
+              </div>
+          </div>
+          {{end}}
         </div>
       </div>
+
     </div>
-  </div>
 
-</body>
+    <div class="container d-flex justify-content-center mt-5">
+        <div class="align-self-center">
+            <h5 class="card-title" id="text">Hostname: {{.HostName}}</h5>
+        </div>
+    </div>
 
-<h5 class="mb-4">Hostname: {{.HostName}}</h5>
-
-
-  <div class="container">
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-
-      <div class="col-md-4 d-flex align-items-center">
-        <span class="mb-3 mb-md-0 text-muted">&copy; 2024-1 Universidad del Quindío - Computación en la nube</span>
-      </div>
-
-      <div class="nav col-md-6 justify-content-end list-unstyled d-flex"> 
-        <span class="mb-3 mb-md-0 text-muted"> <i class="fa-solid fa-people-group"></i> Desarrollado por: Santiago Marin Dussan - David Idarraga Lugo</span>
-        
-
-
-      </div>
-  
-      
+    
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4">
+    
+        <div class="col-md-4 d-flex align-items-center" id="text">
+            <span class="mb-3 mb-md-0 text-muted" id="text">&copy; 2024-1 Universidad del Quindío - Computación en la nube</span>
+        </div>
+    
+        <div class="nav col-md-6 justify-content-end list-unstyled d-flex" id="text"> 
+            <span class="mb-3 mb-md-0 text-muted" id="text"> <i class="fa-solid fa-people-group"></i> Desarrollado por: Santiago Marin Dussan - David Idárraga Lugo</span>
+        </div>
+    
     </footer>
-  </div>
-
+      
+</body>
 
 </html>

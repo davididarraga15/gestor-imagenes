@@ -13,7 +13,6 @@ import (
 
 var (
 	puerto   string
-	tema     string
 	hostname string
 )
 
@@ -25,7 +24,6 @@ func check(e error) {
 }
 
 type DatosPagina struct {
-	Theme    string
 	Images   []ImagenBase64
 	HostName string
 }
@@ -93,7 +91,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		data := DatosPagina{
-			Theme:    tema,
 			Images:   listaGenerada,
 			HostName: hostname,
 		}
@@ -106,6 +103,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	fmt.Print("Ingrese el puerto: ")
 	fmt.Scan(&puerto)
+
+	fs := http.FileServer(http.Dir("static"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	// Manejador para la ruta "/"
 	http.HandleFunc("/", handler)
