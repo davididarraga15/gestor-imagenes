@@ -60,7 +60,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 		var imagen_aleatoria = archivos[rand.IntN(len(archivos)-1)]
 
-		fmt.Println(imagen_aleatoria)
+		fmt.Println("Imagen aleatoria escogida del directorio: " + imagen_aleatoria)
 
 		// Obtener el nombre del host del sistema operativo
 		hostname, err := os.Hostname()
