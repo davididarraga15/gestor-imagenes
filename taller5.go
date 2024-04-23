@@ -1,27 +1,15 @@
 package main
 
 import (
-	b64 "encoding/base64"
+	"encoding/base64"
 	"fmt"
 	"html/template"
 	"log"
-	"math/rand/v2"
+	"math/rand"
 	"net/http"
 	"os"
 	"strings"
 )
-
-var (
-	puerto   string
-	hostname string
-)
-
-func check(e error) {
-	if e != nil {
-		fmt.Println(e)
-		panic(e)
-	}
-}
 
 type DatosPagina struct {
 	Images   []ImagenBase64
@@ -33,14 +21,20 @@ type ImagenBase64 struct {
 	Nombre   string
 }
 
+func check(e error) {
+	if e != nil {
+		fmt.Println(e)
+		panic(e)
+	}
+}
+
 func handler(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.ParseFiles("static/index.html")
 
 	if err != nil {
 		fmt.Fprint(w, "Página no encontrada")
 	} else {
-		// Obtiene el nombre del primer argumento mandado a través de la línea de comandos
-		carpeta := os.Args[1]
+		carpeta := os.Args[2] // Obtener el directorio de los argumentos de la línea de comandos
 		directorio, err := os.Open(carpeta)
 		check(err)
 		defer directorio.Close()
@@ -49,37 +43,33 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 		var archivos []string
 		for _, nombre := range nombres {
-
 			if strings.HasSuffix(nombre, ".jpg") || strings.HasSuffix(nombre, ".png") ||
 				strings.HasSuffix(nombre, ".jpeg") || strings.HasSuffix(nombre, ".JPG") {
 				archivos = append(archivos, nombre)
 			}
 		}
 
-		fmt.Println("Cantidad de archivos en la carpeta: ", len(archivos))
+		fmt.Println("Cantidad de archivos en la carpeta:", len(archivos))
 
-		var imagen_aleatoria = archivos[rand.IntN(len(archivos)-1)]
+		var imagenAleatoria = archivos[rand.Intn(len(archivos)-1)]
 
-		fmt.Println("Imagen aleatoria escogida del directorio: " + imagen_aleatoria)
+		fmt.Println("Imagen aleatoria escogida del directorio:", imagenAleatoria)
 
-		// Obtener el nombre del host del sistema operativo
 		hostname, err := os.Hostname()
 		check(err)
 
-		fmt.Println("Nombre del host: ", hostname)
+		fmt.Println("Nombre del host:", hostname)
 
 		miMapa := make(map[int]string)
 		var listaGenerada []ImagenBase64
 		for i := 0; i < 4; i++ {
-
-			indice := rand.IntN(len(archivos))
-			// Verificar si la clave 1 existe en el map
+			indice := rand.Intn(len(archivos))
 			existe := miMapa[indice]
 			if existe == "" {
 				miMapa[indice] = archivos[indice]
 				f, err := os.ReadFile(carpeta + miMapa[indice])
 				check(err)
-				var src = "data:image/jpg;base64," + b64.StdEncoding.EncodeToString(f)
+				src := "data:image/jpg;base64," + base64.StdEncoding.EncodeToString(f)
 				image := ImagenBase64{
 					Encoding: template.URL(src),
 					Nombre:   miMapa[indice],
@@ -95,22 +85,33 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			HostName: hostname,
 		}
 
-		// Ejecutar la plantilla y escribir el resultado en la respuesta HTTP
 		err = tmpl.Execute(w, data)
 	}
 }
 
 func main() {
-	fmt.Print("Ingrese el puerto: ")
-	fmt.Scan(&puerto)
+
+	puerto := os.Args[1]
+	directorio := os.Args[2]
+
+	// Verifica si el directorio existe
+	if _, err := os.Stat(directorio); os.IsNotExist(err) {
+		fmt.Println("El directorio especificado no existe:", directorio)
+		return
+	}
+
+	// Verifica si se puede abrir el directorio
+	_, err := os.Open(directorio)
+	if err != nil {
+		fmt.Println("Error al abrir el directorio:", err)
+		return
+	}
 
 	fs := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	// Manejador para la ruta "/"
 	http.HandleFunc("/", handler)
 
-	// Iniciar el servidor en el puerto especificado
-	fmt.Println("Servidor escuchando en el puerto " + puerto + "...")
+	fmt.Println("Servidor escuchando en el puerto", puerto)
 	log.Fatal(http.ListenAndServe(":"+puerto, nil))
 }
